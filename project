@@ -12,7 +12,7 @@ struct Student {
     char surname[50];
     int grades[6];
     float average;
-    float pass; 
+    int pass; 
     
 };
 
@@ -41,15 +41,15 @@ void saveDataToFile() {
 void loadDataFromFile() {
     FILE *file = fopen("student_data.txt", "r");
     if (file == NULL) {
-        printf("Dosya okuma işlemi için açılamadı.\n");
+        printf("Error opening file for reading.\n");
         return;
     }
-    totalStudents = 0;
-    while (fscanf(file, "%d %s %s", &students[totalStudents].studentID, students[totalStudents].name, students[totalStudents].surname == 3)) {
+	totalStudents = 0;
+    while (fscanf(file, "%d %s %s", &students[totalStudents].studentID, students[totalStudents].name, students[totalStudents].surname) == 3) {
         for (int j = 0; j < 6; j++) {
             fscanf(file, " %d", &students[totalStudents].grades[j]);
         }
-        
+       //fscanf(file, " %d", &students[totalStudents].pass);
 
         totalStudents++;
         if (totalStudents >= MAX_STUDENTS) {
@@ -178,3 +178,4 @@ int main() {
 
     return 0;
 }
+
