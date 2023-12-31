@@ -13,30 +13,32 @@ struct Student {
     int grades[6];
     float average;
     int pass; 
-    
 };
+
+void calculateGradeAndPass(struct Student *student);
 
 struct Student students[MAX_STUDENTS];
 int totalStudents = 0;
 
 void saveDataToFile() {
     FILE *file;
-	file = fopen("student_data.txt", "r");
+    file = fopen("student_data.txt", "w");
     if (file == NULL) {
         printf("Error opening file for writing.\n");
         exit(1); 
     }
 
     for (int i = 0; i < totalStudents; i++) {
-        fprintf(file, "%d %s", students[i].studentID, students[i].name);
+        fprintf(file, "%d %s %s", students[i].studentID, students[i].name, students[i].surname);
         for (int j = 0; j < 6; j++) {
             fprintf(file, " %d", students[i].grades[j]);
         }
-        fprintf(file, " %d\n", students[i].pass);
+        fprintf(file, "\n");
     }
 
     fclose(file);
 }
+
 
 void loadDataFromFile() {
     FILE *file = fopen("student_data.txt", "r");
@@ -44,12 +46,14 @@ void loadDataFromFile() {
         printf("Error opening file for reading.\n");
         return;
     }
-	totalStudents = 0;
+    totalStudents = 0;
     while (fscanf(file, "%d %s %s", &students[totalStudents].studentID, students[totalStudents].name, students[totalStudents].surname) == 3) {
         for (int j = 0; j < 6; j++) {
             fscanf(file, " %d", &students[totalStudents].grades[j]);
         }
-       //fscanf(file, " %d", &students[totalStudents].pass);
+
+        // Calculate pass or fail status for the loaded student
+        calculateGradeAndPass(&students[totalStudents]);
 
         totalStudents++;
         if (totalStudents >= MAX_STUDENTS) {
@@ -66,24 +70,14 @@ void calculateGradeAndPass(struct Student *student) {
         average += student->grades[i];
     }
     average /= 6.0;
-
-    if (average >= 90) {
-        printf("AA\n");
-    } else if (average >= 80) {
-        printf("BB\n");
-    } else if (average >= 70) {
-        printf("CB\n");
-    } else if (average >= 60) {
-        printf("DC\n");
-    } else if (average >= 50) {
-        printf("FD\n");
-    } else {
-        printf("FF\n");
-        student->pass = 0;
-    }
+    
 
     if (average >= 50) {
         student->pass = 1;
+    }
+	else {
+        
+        student->pass = 0;
     }
 }
 
@@ -124,6 +118,11 @@ void removeStudent(int index) {
     }
 
     totalStudents--;
+    // Update student IDs
+    for (int i = 0; i < totalStudents; i++) {
+        students[i].studentID = i + 1;
+    }
+    
     saveDataToFile();
     printf("Student successfully removed.\n");
 }
@@ -178,4 +177,3 @@ int main() {
 
     return 0;
 }
-
