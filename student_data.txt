@@ -1,0 +1,6 @@
+1 Mehmet Kocak 100 80 90 70 88 69
+2 Kemal Kocak 78 89 76 85 65 45
+3 Yusuf Kocak 96 94 92 91 98 90
+4 Mahmut Kocak 89 89 89 89 89 89
+5 Ali Kocak 23 45 32 43 15 62
+6 Ahmet Kocak 32 43 13 27 46 63
